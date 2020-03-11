@@ -32,22 +32,52 @@ func Clear() {
 	cmd.Stdout = os.Stdout
 	cmd.Run()
 }
+func Mostrar(i int) {
+
+	fmt.Printf("ID: %d \n", i)
+	fmt.Printf("nombre: %s \n", Alumnos[i].Nombre)
+	fmt.Printf("calificacion 1: %d \n", Alumnos[i].Cal1)
+	fmt.Printf("calificacion 2: %d \n", Alumnos[i].Cal2)
+	fmt.Printf("calificacion 3: %d \n", Alumnos[i].Cal3)
+}
+
+func Lista() {
+	Clear()
+	for i := 0; i < len(Alumnos); i++ {
+		fmt.Println(strings.Repeat("*", 10))
+		Mostrar(i)
+		fmt.Println(strings.Repeat("*", 10))
+	}
+	Esperar()
+}
 
 func GuardadInfo() {
-	hello := []byte(Alumns)
+	Clear()
+	hello2 := ""
+	for i := 0; i < len(Alumnos); i++ {
 
-	err := ioutil.WriteFile("test.txt", hello, 0644)
-	if err != nil {
-		panic(err)
+		cal1Parsed := strconv.Itoa(Alumnos[i].Cal1)
+		cal2Parsed := strconv.Itoa(Alumnos[i].Cal2)
+		cal3Parsed := strconv.Itoa(Alumnos[i].Cal3)
+		hello2 += Alumnos[i].Nombre + " " + cal1Parsed + " " + cal2Parsed + " " + cal3Parsed + "\n"
 	}
+	f, _ := os.Create("test.txt")
+	defer f.Close()
+	f.WriteString(hello2)
+
+	fmt.Println("Escrita con Exito!!")
+	Esperar()
 }
 
 func LeerInfo() {
+	Clear()
 	data, err := ioutil.ReadFile("test.txt")
-    if err != nil {
-        panic(err)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println("The file contains: " + string(data))
+	Esperar()
 }
-
 func Capturar() {
 	Clear()
 	reader := bufio.NewReader(os.Stdin)
@@ -90,6 +120,8 @@ func main() {
 		fmt.Println("2)Guardar Informacion")
 		fmt.Println("3)Abrir archivo")
 		fmt.Println("4)Salir")
+		fmt.Println("5)lista")
+
 		option, _ := reader.ReadString('\n')
 		option = strings.TrimSpace(option)
 		switch option {
@@ -101,6 +133,8 @@ func main() {
 			GuardadInfo()
 		case "3":
 			LeerInfo()
+		case "5":
+			Lista()
 
 		}
 

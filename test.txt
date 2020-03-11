@@ -1,0 +1,3 @@
+abiel 10 10 10
+jose 5 5 5
+alfred 10 10 10
